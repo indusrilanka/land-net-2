@@ -1,0 +1,15 @@
+/channel-artifacts/*.tx
+/channel-artifacts/*.block
+/ledgers
+/ledgers-backup
+/channel-artifacts/*.json
+organizations/fabric-ca/ordererOrg/*
+organizations/fabric-ca/land-registry/*
+organizations/fabric-ca/notary/*
+organizations/fabric-ca/other/*
+organizations/fabric-ca/registrar-general/*
+organizations/ordererOrganizations/*
+organizations/peerOrganizations/*
+system-genesis-block/*
+*.tar.gz
+log.txt
