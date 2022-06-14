@@ -121,7 +121,7 @@ services:
       - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:6052
       - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.registrar-general.ousl.com:6051
       - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.registrar-general.ousl.com:6051
-      - CORE_PEER_LOCALMSPID=RegistrarGeneral
+      - CORE_PEER_LOCALMSPID=RegistrarGeneralMSP
       - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp      
       - CORE_OPERATIONS_LISTENADDRESS=peer0.registrar-general.ousl.com:9445
       - CORE_METRICS_PROVIDER=prometheus

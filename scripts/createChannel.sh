@@ -27,7 +27,7 @@ createChannelGenesisBlock() {
 		fatalln "configtxgen tool not found."
 	fi
 	set -x
-	configtxgen -profile TwoOrgsApplicationGenesis -outputBlock ./channel-artifacts/${CHANNEL_NAME}.block -channelID $CHANNEL_NAME
+	configtxgen -profile LandNetApplicationGenesis -outputBlock ./channel-artifacts/${CHANNEL_NAME}.block -channelID $CHANNEL_NAME
 	res=$?
 	{ set +x; } 2>/dev/null
   verifyResult $res "Failed to generate channel configuration transaction..."
@@ -55,6 +55,7 @@ createChannel() {
 joinChannel() {
   FABRIC_CFG_PATH=$PWD/../config/
   ORG=$1
+  ORG_NAME=$2
   setGlobals $ORG
 	local rc=1
 	local COUNTER=1
@@ -69,17 +70,21 @@ joinChannel() {
 		COUNTER=$(expr $COUNTER + 1)
 	done
 	cat log.txt
-	verifyResult $res "After $MAX_RETRY attempts, peer0.org${ORG} has failed to join channel '$CHANNEL_NAME' "
+	verifyResult $res "After $MAX_RETRY attempts, peer0.${ORG_NAME} has failed to join channel '$CHANNEL_NAME' "
 }
 
 setAnchorPeer() {
   ORG=$1
-  ${CONTAINER_CLI} exec cli ./scripts/setAnchorPeer.sh $ORG $CHANNEL_NAME 
+  ORG_NAME=$2
+  PEER_PORT=$3
+
+
+  ${CONTAINER_CLI} exec cli ./scripts/setAnchorPeer.sh $ORG $ORG_NAME $PEER_PORT $CHANNEL_NAME 
 }
 
 FABRIC_CFG_PATH=${PWD}/configtx
 
-## Create channel genesis block
+# Create channel genesis block
 infoln "Generating channel genesis block '${CHANNEL_NAME}.block'"
 createChannelGenesisBlock
 
@@ -92,15 +97,24 @@ createChannel
 successln "Channel '$CHANNEL_NAME' created"
 
 ## Join all the peers to the channel
-infoln "Joining org1 peer to the channel..."
-joinChannel 1
-infoln "Joining org2 peer to the channel..."
-joinChannel 2
+
+infoln "Joining land registry peer to the channel..."
+joinChannel 1 land-registry
+infoln "Joining registrar general peer to the channel..."
+joinChannel 2 registrar-general
+infoln "Joining notary peer to the channel..."
+joinChannel 3 notary
+infoln "Joining other peer to the channel..."
+joinChannel 4 other
 
 ## Set the anchor peers for each org in the channel
-infoln "Setting anchor peer for org1..."
-setAnchorPeer 1
-infoln "Setting anchor peer for org2..."
-setAnchorPeer 2
+infoln "Setting anchor peer for land registry..."
+setAnchorPeer 1 land-registry 5051 
+infoln "Setting anchor peer for registrar general..."
+setAnchorPeer 2 registrar-general 6051
+infoln "Setting anchor peer for notary..."
+setAnchorPeer 3 notary 7051
+infoln "Setting anchor peer for other..."
+setAnchorPeer 4 other 8051
 
-successln "Channel '$CHANNEL_NAME' joined"
+# successln "Channel '$CHANNEL_NAME' joined"

@@ -11,38 +11,44 @@
 . scripts/utils.sh
 
 export CORE_PEER_TLS_ENABLED=true
-export ORDERER_CA=${PWD}/organizations/ordererOrganizations/example.com/tlsca/tlsca.example.com-cert.pem
-export PEER0_ORG1_CA=${PWD}/organizations/peerOrganizations/org1.example.com/tlsca/tlsca.org1.example.com-cert.pem
-export PEER0_ORG2_CA=${PWD}/organizations/peerOrganizations/org2.example.com/tlsca/tlsca.org2.example.com-cert.pem
-export PEER0_ORG3_CA=${PWD}/organizations/peerOrganizations/org3.example.com/tlsca/tlsca.org3.example.com-cert.pem
-export ORDERER_ADMIN_TLS_SIGN_CERT=${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/tls/server.crt
-export ORDERER_ADMIN_TLS_PRIVATE_KEY=${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/tls/server.key
+export ORDERER_CA=${PWD}/organizations/ordererOrganizations/ousl.com/tlsca/tlsca.ousl.com-cert.pem
+export PEER0_LAND_REGISTRY_CA=${PWD}/organizations/peerOrganizations/land-registry.ousl.com/tlsca/tlsca.land-registry.ousl.com-cert.pem
+export PEER0_REGISTRAR_GENERAL_CA=${PWD}/organizations/peerOrganizations/registrar-general.ousl.com/tlsca/tlsca.registrar-general.ousl.com-cert.pem
+export PEER0_NOTARY_CA=${PWD}/organizations/peerOrganizations/notary.ousl.com/tlsca/tlsca.notary.ousl.com-cert.pem
+export PEER0_OTHER_CA=${PWD}/organizations/peerOrganizations/other.ousl.com/tlsca/tlsca.other.ousl.com-cert.pem
+export ORDERER_ADMIN_TLS_SIGN_CERT=${PWD}/organizations/ordererOrganizations/ousl.com/orderers/orderer.ousl.com/tls/server.crt
+export ORDERER_ADMIN_TLS_PRIVATE_KEY=${PWD}/organizations/ordererOrganizations/ousl.com/orderers/orderer.ousl.com/tls/server.key
 
 # Set environment variables for the peer org
 setGlobals() {
   local USING_ORG=""
   if [ -z "$OVERRIDE_ORG" ]; then
-    USING_ORG=$1
+    USING_ORG=$1    
   else
     USING_ORG="${OVERRIDE_ORG}"
   fi
   infoln "Using organization ${USING_ORG}"
   if [ $USING_ORG -eq 1 ]; then
-    export CORE_PEER_LOCALMSPID="Org1MSP"
-    export CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_ORG1_CA
-    export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp
-    export CORE_PEER_ADDRESS=localhost:7051
+    export CORE_PEER_LOCALMSPID="LandRegistryMSP"
+    export CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_LAND_REGISTRY_CA
+    export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/land-registry.ousl.com/users/Admin@land-registry.ousl.com/msp
+    export CORE_PEER_ADDRESS=localhost:5051
   elif [ $USING_ORG -eq 2 ]; then
-    export CORE_PEER_LOCALMSPID="Org2MSP"
-    export CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_ORG2_CA
-    export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp
-    export CORE_PEER_ADDRESS=localhost:9051
+    export CORE_PEER_LOCALMSPID="RegistrarGeneralMSP"
+    export CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_REGISTRAR_GENERAL_CA
+    export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/registrar-general.ousl.com/users/Admin@registrar-general.ousl.com/msp
+    export CORE_PEER_ADDRESS=localhost:6051
 
   elif [ $USING_ORG -eq 3 ]; then
-    export CORE_PEER_LOCALMSPID="Org3MSP"
-    export CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_ORG3_CA
-    export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/org3.example.com/users/Admin@org3.example.com/msp
-    export CORE_PEER_ADDRESS=localhost:11051
+    export CORE_PEER_LOCALMSPID="NotaryMSP"
+    export CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_NOTARY_CA
+    export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/notary.ousl.com/users/Admin@notary.ousl.com/msp
+    export CORE_PEER_ADDRESS=localhost:7051
+  elif [ $USING_ORG -eq 4 ]; then
+    export CORE_PEER_LOCALMSPID="OtherMSP"
+    export CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_OTHER_CA
+    export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/other.ousl.com/users/Admin@other.ousl.com/msp
+    export CORE_PEER_ADDRESS=localhost:8051
   else
     errorln "ORG Unknown"
   fi
@@ -63,11 +69,13 @@ setGlobalsCLI() {
     USING_ORG="${OVERRIDE_ORG}"
   fi
   if [ $USING_ORG -eq 1 ]; then
-    export CORE_PEER_ADDRESS=peer0.org1.example.com:7051
+    export CORE_PEER_ADDRESS=peer0.land-registry.ousl.com:5051
   elif [ $USING_ORG -eq 2 ]; then
-    export CORE_PEER_ADDRESS=peer0.org2.example.com:9051
+    export CORE_PEER_ADDRESS=peer0.registrar-general.ousl.com:6051
   elif [ $USING_ORG -eq 3 ]; then
-    export CORE_PEER_ADDRESS=peer0.org3.example.com:11051
+    export CORE_PEER_ADDRESS=peer0.notary.ousl.com:7051
+  elif [ $USING_ORG -eq 4 ]; then
+    export CORE_PEER_ADDRESS=peer0.other.ousl.com:8051
   else
     errorln "ORG Unknown"
   fi

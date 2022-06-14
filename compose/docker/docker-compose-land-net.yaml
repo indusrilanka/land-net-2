@@ -5,8 +5,8 @@
 
 version: '3.7'
 services:
-  peer0.land-registry.example.com:
-    container_name: peer0.land-registry.example.com
+  peer0.land-registry.ousl.com:
+    container_name: peer0.land-registry.ousl.com
     image: hyperledger/fabric-peer:latest
     labels:
       service: hyperledger-fabric
@@ -18,8 +18,8 @@ services:
       - ./docker/peercfg:/etc/hyperledger/peercfg
       - ${DOCKER_SOCK}:/host/var/run/docker.sock
 
-  peer0.registrar-general.example.com:
-    container_name: peer0.registrar-general.example.com
+  peer0.registrar-general.ousl.com:
+    container_name: peer0.registrar-general.ousl.com
     image: hyperledger/fabric-peer:latest
     labels:
       service: hyperledger-fabric
@@ -31,8 +31,8 @@ services:
       - ./docker/peercfg:/etc/hyperledger/peercfg
       - ${DOCKER_SOCK}:/host/var/run/docker.sock
 
-  peer0.notary.example.com:
-    container_name: peer0.notary.example.com
+  peer0.notary.ousl.com:
+    container_name: peer0.notary.ousl.com
     image: hyperledger/fabric-peer:latest
     labels:
       service: hyperledger-fabric
@@ -44,8 +44,8 @@ services:
       - ./docker/peercfg:/etc/hyperledger/peercfg
       - ${DOCKER_SOCK}:/host/var/run/docker.sock
 
-  peer0.other.example.com:
-    container_name: peer0.other.example.com
+  peer0.other.ousl.com:
+    container_name: peer0.other.ousl.com
     image: hyperledger/fabric-peer:latest
     labels:
       service: hyperledger-fabric

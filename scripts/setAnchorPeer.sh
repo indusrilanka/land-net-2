@@ -15,20 +15,23 @@ createAnchorPeerUpdate() {
   infoln "Fetching channel config for channel $CHANNEL_NAME"
   fetchChannelConfig $ORG $CHANNEL_NAME ${CORE_PEER_LOCALMSPID}config.json
 
-  infoln "Generating anchor peer update transaction for Org${ORG} on channel $CHANNEL_NAME"
+  infoln "Generating anchor peer update transaction for ${ORG_NAME} on channel $CHANNEL_NAME"
 
-  if [ $ORG -eq 1 ]; then
-    HOST="peer0.org1.example.com"
-    PORT=7051
-  elif [ $ORG -eq 2 ]; then
-    HOST="peer0.org2.example.com"
-    PORT=9051
-  elif [ $ORG -eq 3 ]; then
-    HOST="peer0.org3.example.com"
-    PORT=11051
-  else
-    errorln "Org${ORG} unknown"
-  fi
+  HOST="peer0.${ORG_NAME}.ousl.com"
+  PORT=$PEER_PORT
+
+  # if [ $ORG -eq 1 ]; then
+  #   HOST="peer0.org1.ousl.com"
+  #   PORT=7051
+  # elif [ $ORG -eq 2 ]; then
+  #   HOST="peer0.org2.ousl.com"
+  #   PORT=9051
+  # elif [ $ORG -eq 3 ]; then
+  #   HOST="peer0.org3.ousl.com"
+  #   PORT=11051
+  # else
+  #   errorln "Org${ORG} unknown"
+  # fi
 
   set -x
   # Modify the configuration to append the anchor peer 
@@ -42,7 +45,7 @@ createAnchorPeerUpdate() {
 }
 
 updateAnchorPeer() {
-  peer channel update -o orderer.example.com:7050 --ordererTLSHostnameOverride orderer.example.com -c $CHANNEL_NAME -f ${CORE_PEER_LOCALMSPID}anchors.tx --tls --cafile "$ORDERER_CA" >&log.txt
+  peer channel update -o orderer.ousl.com:7050 --ordererTLSHostnameOverride orderer.ousl.com -c $CHANNEL_NAME -f ${CORE_PEER_LOCALMSPID}anchors.tx --tls --cafile "$ORDERER_CA" >&log.txt
   res=$?
   cat log.txt
   verifyResult $res "Anchor peer update failed"
@@ -50,7 +53,9 @@ updateAnchorPeer() {
 }
 
 ORG=$1
-CHANNEL_NAME=$2
+ORG_NAME=$2
+PEER_PORT=$3
+CHANNEL_NAME=$4
 
 setGlobalsCLI $ORG
 
