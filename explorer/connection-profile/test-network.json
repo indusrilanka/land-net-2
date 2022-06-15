@@ -1,0 +1,48 @@
+{
+	"name": "test-network",
+	"version": "1.0.0",
+	"client": {
+		"tlsEnable": true,
+		"adminCredential": {
+			"id": "exploreradmin",
+			"password": "exploreradminpw"
+		},
+		"enableAuthentication": true,
+		"organization": "LandRegistryMSP",
+		"connection": {
+			"timeout": {
+				"peer": {
+					"endorser": "300"
+				},
+				"orderer": "300"
+			}
+		}
+	},
+	"channels": {
+		"mychannel": {
+			"peers": {
+				"peer0.land-registry.ousl.com": {}
+			}
+		}
+	},
+	"organizations": {
+		"LandRegistryMSP": {
+			"mspid": "LandRegistryMSP",
+			"adminPrivateKey": {
+				"path": "/tmp/crypto/peerOrganizations/land-registry.ousl.com/users/User1@land-registry.ousl.com/msp/keystore/priv_sk"
+			},
+			"peers": ["peer0.land-registry.ousl.com"],
+			"signedCert": {
+				"path": "/tmp/crypto/peerOrganizations/land-registry.ousl.com/users/User1@land-registry.example.com/msp/signcerts/User1@land-registry.ousl.com-cert.pem"
+			}
+		}
+	},
+	"peers": {
+		"peer0.land-registry.ousl.com": {
+			"tlsCACerts": {
+				"path": "/tmp/crypto/peerOrganizations/land-registry.ousl.com/peers/peer0.land-registry.ousl.com/tls/ca.crt"
+			},
+			"url": "grpcs://peer0.land-registry.ousl.com:5051"
+		}
+	}
+}

@@ -10,6 +10,7 @@ organizations/fabric-ca/other/*
 organizations/fabric-ca/registrar-general/*
 organizations/ordererOrganizations/*
 organizations/peerOrganizations/*
+explorer/organizations/*
 system-genesis-block/*
 *.tar.gz
 log.txt
